@@ -1,9 +1,8 @@
-#include <iostream>
-
-using namespace std;
+#include "MainHeader.h"
 
 int main()
 {
-    cout << "Hello world!" << endl;
-    return 0;
+    ShowConsoleCursor(false);
+    DefaultDisplay();
+
 }
