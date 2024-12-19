@@ -58,7 +58,6 @@ void add(infotype x){
 
 void backspace(){
     if (cursor.txt_info){
-
         if (cursor.txt_info == cursor.line_info->TxtFirst){
             cursor.txt_info = NULL;
             cursor.line_info->TxtFirst = cursor.line_info->TxtFirst->next;
@@ -82,10 +81,26 @@ void backspace(){
 }
 
 void delete_elem(){
-    if (cursor.line_info->TxtFirst != cursor.line_info->TxtLast){
-        cursor.txt_info = NULL;
-        cursor.line_info->TxtFirst = NULL;
-        cursor.line_info->TxtLast = NULL;
+    if (cursor.txt_info != cursor.line_info->TxtLast){
+        if (!cursor.txt_info && cursor.line_info->TxtFirst){
+            cursor.line_info->TxtFirst = cursor.line_info->TxtFirst->next;
+            if (!cursor.line_info->TxtFirst){
+                cursor.line_info->TxtLast = NULL;
+            } else {
+                 cursor.line_info->TxtFirst->prev->next = NULL;
+                 cursor.line_info->TxtFirst->prev = NULL;
+            }
+        } else if (cursor.txt_info->next == cursor.line_info->TxtLast){
+            cursor.txt_info->next = NULL;
+            cursor.line_info->TxtLast->prev = NULL;
+            cursor.line_info->TxtLast = cursor.txt_info;
+        } else {
+             adrTxt tmp = cursor.txt_info->next->next;
+             cursor.txt_info->next = tmp;
+             tmp->prev->prev = NULL;
+             tmp->prev->next = NULL;
+             tmp->prev = cursor.txt_info;
+        }
     }
 }
 
