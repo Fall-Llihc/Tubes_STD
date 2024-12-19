@@ -54,9 +54,40 @@ void add(infotype x){
     cursor.line_info->TxtLast = elem;
 }
 
+//Deletion
 
+void backspace(){
+    if (cursor.txt_info){
 
+        if (cursor.txt_info == cursor.line_info->TxtFirst){
+            cursor.txt_info = NULL;
+            cursor.line_info->TxtFirst = cursor.line_info->TxtFirst->next;
+            if (cursor.line_info->TxtFirst == NULL){
+                cursor.line_info->TxtLast = NULL;
+            }
+        } else if (cursor.txt_info == cursor.line_info->TxtLast) {
+            cursor.txt_info = cursor.txt_info->prev;
+            cursor.txt_info->next->prev = NULL;
+            cursor.txt_info->next = NULL;
+            cursor.line_info->TxtLast = cursor.txt_info;
+        } else {
+            adrTxt tmp = cursor.txt_info->prev;
+            cursor.txt_info->prev->next = cursor.txt_info->next;
+            cursor.txt_info->next->prev = cursor.txt_info->prev;
+            cursor.txt_info->next = NULL;
+            cursor.txt_info->prev = NULL;
+            cursor.txt_info = tmp;
+        }
+    }
+}
 
+void delete_elem(){
+    if (cursor.line_info->TxtFirst != cursor.line_info->TxtLast){
+        cursor.txt_info = NULL;
+        cursor.line_info->TxtFirst = NULL;
+        cursor.line_info->TxtLast = NULL;
+    }
+}
 
 
 
