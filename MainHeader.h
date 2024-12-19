@@ -7,8 +7,16 @@
 #include "cstdio"
 using namespace std;
 
-void ShowConsoleCursor(bool showFlag);
-void DefaultDisplay();
-void IntroText(string mocde);
+//Include another header
+#include "Struct_and_Typedef.h"
+#include "Basic_Function.h"
+#include "Display.h"
+
+//Function
+
+//Universal variable
+extern int LineNum;
+extern LineList Line;
+extern Cursor cursor;
 
 #endif // MAINHEADER_H_INCLUDED
