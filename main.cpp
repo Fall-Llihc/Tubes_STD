@@ -3,6 +3,7 @@
 
 int main(void)
 {
+
     HANDLE hStdout;
     hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
     ShowConsoleCursor(false);
@@ -48,10 +49,15 @@ int main(void)
             up();
         } else if (inp == KEY_DOWN) { //Kursor bawah
             down();
+        } else if (inp == HOME) { //Kursor bawah
+            Home();
+        } else if (inp == END) { //Kursor bawah
+            End();
         } else {
             cout<<endl;
             add(char(inp));
         }
+        updateLineNumber();
     }
 
     return 0;

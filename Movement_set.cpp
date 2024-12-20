@@ -57,3 +57,18 @@ void down(){
         }
     }
 }
+
+void Home(){
+    while (cursor.txt_info){
+        cursor.txt_info = cursor.txt_info->prev;
+    }
+}
+
+void End(){
+    if (!cursor.txt_info){
+        cursor.txt_info = cursor.line_info->TxtFirst;
+    }
+    while (cursor.txt_info != cursor.line_info->TxtLast){
+        cursor.txt_info = cursor.txt_info->next;
+    }
+}

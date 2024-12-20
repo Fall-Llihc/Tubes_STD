@@ -11,9 +11,10 @@ struct history{
     adrHistory prev;
 };
 
-struct ListHistory(){
+struct ListHistory{
     adrHistory First;
     adrHistory Last;
 };
+
 
 #endif // HISTORY_AND_FEATURES_H_INCLUDED

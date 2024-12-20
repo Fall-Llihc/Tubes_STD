@@ -12,6 +12,7 @@ using namespace std;
 #include "Basic_Function.h"
 #include "Display.h"
 #include "Movement.h"
+#include "History_and_Features.h"
 
 //Universal variable
 extern int LineNum;

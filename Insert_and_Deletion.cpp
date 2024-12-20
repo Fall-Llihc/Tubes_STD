@@ -4,7 +4,7 @@ int LineNum = 0;
 LineList Line; //Universal variable
 Cursor cursor = {
     NULL,
-    NULL
+    NULL,
 }; //Universal variable
 
 //Function
@@ -23,17 +23,38 @@ void createLine(){
     line_new->prev = NULL;
     line_new->TxtFirst = NULL;
     line_new->TxtLast = NULL;
-    line_new->LineNumber = ++LineNum;
+    LineNum++;
 
     if (Line.First == NULL){
         Line.First = line_new;
         Line.Last = line_new;
-    } else {
+    } else if (cursor.line_info == Line.Last){
         Line.Last->next = line_new;
         line_new->prev = Line.Last;
         Line.Last = line_new;
+    } else {
+        line_new->next = cursor.line_info->next;
+        cursor.line_info->next = line_new;
+        line_new->prev = cursor.line_info;
+        line_new->next->prev = line_new;
     }
 
+    if (cursor.line_info && (cursor.txt_info != cursor.line_info->TxtLast)){
+        if (!cursor.txt_info){
+            line_new->TxtFirst = cursor.line_info->TxtFirst;
+            line_new->TxtLast = cursor.line_info->TxtLast;
+            cursor.line_info->TxtFirst = NULL;
+            cursor.line_info->TxtLast = NULL;
+        } else {
+            line_new->TxtFirst = cursor.txt_info->next;
+            if (line_new->TxtFirst){
+                line_new->TxtLast = cursor.line_info->TxtLast;
+                cursor.txt_info->next->prev = NULL;
+                cursor.txt_info->next = NULL;
+            }
+            cursor.line_info->TxtLast = cursor.txt_info;
+        }
+    }
     cursor.line_info = line_new;
     cursor.txt_info = NULL;
 }
@@ -87,6 +108,33 @@ void backspace(){
             cursor.txt_info->prev = NULL;
             cursor.txt_info = tmp;
         }
+    } else if (cursor.line_info->LineNumber != 1) {  //Hapus line
+        adrTxt tmpTxt = cursor.line_info->prev->TxtLast;
+
+        if (!tmpTxt){
+            cursor.line_info->prev->TxtFirst = cursor.line_info->TxtFirst;
+            cursor.line_info->prev->TxtLast  = cursor.line_info->TxtLast;
+        } else {
+            tmpTxt->next = cursor.line_info->TxtFirst;
+            if (tmpTxt->next){
+               cursor.line_info->prev->TxtLast = cursor.line_info->TxtLast;
+               tmpTxt->next->prev = tmpTxt;
+            }
+        }
+        cursor.txt_info = tmpTxt;
+        adrLine tmpLine = cursor.line_info->prev;
+        tmpLine->next = cursor.line_info->next;
+        if (cursor.line_info->next != NULL){
+            cursor.line_info->next->prev = tmpLine;
+        }
+
+        if (cursor.line_info == Line.Last){
+            Line.Last = tmpLine;
+        }
+        cursor.line_info->next = NULL;
+        cursor.line_info->prev = NULL;
+        cursor.line_info = tmpLine;
+        LineNum--;
     }
 }
 
@@ -122,4 +170,13 @@ int get_code(){
     ch = 256 + getch();
 
   return ch;
+}
+
+void updateLineNumber(){
+    int num = 1;
+    adrLine tmp = Line.First;
+    while(tmp){
+        tmp->LineNumber = num++;
+        tmp = tmp->next;
+    }
 }

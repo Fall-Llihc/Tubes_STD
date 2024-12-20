@@ -1,5 +1,6 @@
 #include "MainHeader.h"
 
+
 adrHistory createHistoryElem(string tipe){
     adrHistory P = new history;
     P->tipe = tipe;
@@ -9,3 +10,4 @@ adrHistory createHistoryElem(string tipe){
     P->prev = NULL;
     return P;
 }
+
