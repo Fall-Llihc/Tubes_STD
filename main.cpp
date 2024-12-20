@@ -20,10 +20,14 @@ int main(void)
             backspace();
         } else if (inp == 339) { //Delete
             delete_elem();
-        } else if (inp == KEY_LEFT) { //Delete
+        } else if (inp == KEY_LEFT) { //Kursor kiri
             left();
-        } else if (inp == KEY_RIGHT) { //Delete
+        } else if (inp == KEY_RIGHT) { //Kursor kanan
             right();
+        } else if (inp == KEY_UP) { //Kursor atas
+            up();
+        } else if (inp == KEY_DOWN) { //Kursor bawah
+            down();
         } else {
             cout<<endl;
             add(char(inp));

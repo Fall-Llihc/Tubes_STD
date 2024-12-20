@@ -8,5 +8,7 @@
 
 void left();
 void right();
+void up();
+void down();
 
 #endif // MOVEMENT_H_INCLUDED
