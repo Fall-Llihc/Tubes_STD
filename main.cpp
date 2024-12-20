@@ -19,28 +19,25 @@ int main(void)
         if (inp == 27){ // Enter
             cls(hStdout);
             Print("Command");
+            string input_mode = commandCheck();
 
-            printf("\n\n\n\n\n\n");
-            string mode;
-            inp = get_code();
-            if (inp == 58){
-                cout << char(inp);
-                cin >> mode;
-                if (mode == "q!"){
-                    cls(hStdout);
-                    cout << "!Thank You!" << endl;
-                    break;
-                } else {
-                    continue;
-                }
+            if(input_mode == "q!"){
+                cls(hStdout);
+                cout << "THANKS";
+                break;
+            } else{
+                continue;
             }
 
         } else if (inp == 13){ // Enter
             createLine();
+            addHistory(createElemHistory("createLine"));
         } else if (inp == 8){ //Backspace
             backspace();
+            addHistory(createElemHistory("backspace"));
         } else if (inp == 339) { //Delete
             delete_elem();
+            addHistory(createElemHistory("delete"));
         } else if (inp == KEY_LEFT) { //Kursor kiri
             left();
         } else if (inp == KEY_RIGHT) { //Kursor kanan
@@ -56,6 +53,7 @@ int main(void)
         } else {
             cout<<endl;
             add(char(inp));
+            addHistory(createElemHistory("add"));
         }
         updateLineNumber();
     }

@@ -3,7 +3,6 @@
 void DefaultDisplay(bool &typing){
     int input;
     string mode_input;
-    bool first = true;
     IntroText("Command");
 
      while(true){
