@@ -4,18 +4,16 @@ void DefaultDisplay(bool &typing){
     int input;
     string mode_input;
     bool first = true;
-
     IntroText("Command");
-    typing = true;
-}
 
+}
 void IntroText(string mode){
     printf("Mode: %s", mode.c_str());
     printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGTC Code Editor v0.1\n\n");
     printf("\t\t\t\t    Here are some command lists in command mode.\n\n");
     printf("\033[38;5;87m\t\t\t\t    type :help\033[m\t for new player.\n");
     printf("\033[38;5;87m\t\t\t\t    type :q!\033[m\t to rage quit if you stress out!\n");
-    printf("\033[38;5;87m\t\t\t\t    type :id!\033[m\t to become nasionalist.\n\n\n");
+    printf("\033[38;5;87m\t\t\t\t    type :id!\033[m\t to become nasionalist.\n\n\n\n\n\n\n");
     printf("------------------------------------------------------------------------------------------------------------------------\n");
 }
 
@@ -29,27 +27,76 @@ void ShowConsoleCursor(bool showFlag){
     SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void printLine(adrLine P){
+void printLine(adrLine P, int linenum){
     adrTxt temp = P->TxtFirst;
+    if ((!cursor.txt_info || !temp) && (linenum == cursor.line_info->LineNumber)){
+        cout << '|';
+    }
     while (temp){
         cout << temp->info;
+        if(temp == cursor.txt_info){
+            cout << '|';
+        }
         temp = temp->next;
     }
     cout << endl;
 }
 
-void Print(){
+
+void Print(string mode){
+    int line = 1;
+    printf("Mode: %s\n", mode.c_str());
     int numline = 0;
     adrLine Line_tmp = Line.First;
     while(Line_tmp != NULL){
         printf("Line %d :", ++numline);
-        printLine(Line_tmp);
+        printLine(Line_tmp, line++);
         Line_tmp = Line_tmp->next;
     }
 }
 
+void seeCursor(){
+    cout << cursor.line_info->LineNumber << ", ";
+    if (cursor.txt_info){
+        cout << cursor.txt_info->info << endl;
+    }
+}
 
+void cls(HANDLE hConsole){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    SMALL_RECT scrollRect;
+    COORD scrollTarget;
+    CHAR_INFO fill;
 
+    // Get the number of character cells in the current buffer.
+    if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+    {
+        return;
+    }
+
+    // Scroll the rectangle of the entire buffer.
+    scrollRect.Left = 0;
+    scrollRect.Top = 0;
+    scrollRect.Right = csbi.dwSize.X;
+    scrollRect.Bottom = csbi.dwSize.Y;
+
+    // Scroll it upwards off the top of the buffer with a magnitude of the entire height.
+    scrollTarget.X = 0;
+    scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+
+    // Fill with empty spaces with the buffer's default text attribute.
+    fill.Char.UnicodeChar = TEXT(' ');
+    fill.Attributes = csbi.wAttributes;
+
+    // Do the scroll
+    ScrollConsoleScreenBuffer(hConsole, &scrollRect, NULL, scrollTarget, &fill);
+
+    // Move the cursor to the top left corner too.
+    csbi.dwCursorPosition.X = 0;
+    csbi.dwCursorPosition.Y = 0;
+
+    SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+}
 
 
 

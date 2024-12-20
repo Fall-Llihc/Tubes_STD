@@ -11,8 +11,7 @@ using namespace std;
 #include "Struct_and_Typedef.h"
 #include "Basic_Function.h"
 #include "Display.h"
-
-//Function
+#include "Movement.h"
 
 //Universal variable
 extern int LineNum;

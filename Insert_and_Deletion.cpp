@@ -41,17 +41,27 @@ void createLine(){
 
 void add(infotype x){
     adrTxt elem = createTxtElem(x);
-    if (cursor.line_info->TxtFirst == NULL){
+    if (!cursor.txt_info && cursor.line_info->TxtFirst){
+        elem->next = cursor.line_info->TxtFirst;
+        cursor.line_info->TxtFirst->prev = elem;
         cursor.line_info->TxtFirst = elem;
-    }
-     else {
+
+    }else if (cursor.line_info->TxtFirst == NULL){
+        cursor.line_info->TxtFirst = elem;
+        cursor.line_info->TxtLast = elem;
+    }else if (cursor.txt_info == cursor.line_info->TxtLast) {
+        cursor.txt_info->next = elem;
+        elem->prev = cursor.txt_info;
+        cursor.line_info->TxtLast = elem;
+    }else {
+        elem->next = cursor.txt_info->next;
+        elem->next->prev = elem;
         cursor.txt_info->next = elem;
         elem->prev = cursor.txt_info;
     }
 
     cursor.txt_info = elem;
     cursor.line_info->TxtLen++;
-    cursor.line_info->TxtLast = elem;
 }
 
 //Deletion
@@ -82,6 +92,7 @@ void backspace(){
 
 void delete_elem(){
     if (cursor.txt_info != cursor.line_info->TxtLast){
+        cursor.line_info->TxtLen--;
         if (!cursor.txt_info && cursor.line_info->TxtFirst){
             cursor.line_info->TxtFirst = cursor.line_info->TxtFirst->next;
             if (!cursor.line_info->TxtFirst){
@@ -104,26 +115,11 @@ void delete_elem(){
     }
 }
 
+int get_code(){
+  int ch = getch();
 
+  if ( ch == 0 || ch == 224 )
+    ch = 256 + getch();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return ch;
+}
