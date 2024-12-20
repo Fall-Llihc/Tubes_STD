@@ -6,14 +6,69 @@ void DefaultDisplay(bool &typing){
     bool first = true;
     IntroText("Command");
 
+     while(true){
+        input = getch();
+        if (input == 58){
+            cout << char(input);
+            cin >> mode_input;
+            if (mode_input == "q!"){
+                system("CLS");
+                cout << "!Thank You!" << endl;
+                break;
+            } else if(mode_input == "help"){
+                system("CLS");
+                showHelp();
+                getch();
+                system("CLS");
+                IntroText("Command");
+                continue;
+            } else {
+                system("CLS");
+                IntroText("Command");
+                continue;
+            }
+        } else if (input == 27){
+            system("CLS");
+            IntroText("Command");
+            continue;
+        } else {
+            system("CLS");
+            IntroText("Insert");
+            input = getch();
+            if (input == 27){
+                system("CLS");
+                IntroText("Command");
+                continue;
+            } else if (input == 13){
+                createLine();
+                typing = true;
+                break;
+            } else {
+                createLine();
+                add(char(input));
+                typing = true;
+                break;
+            }
+        }
+    }
 }
+
 void IntroText(string mode){
     printf("Mode: %s", mode.c_str());
     printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGTC Code Editor v0.1\n\n");
     printf("\t\t\t\t    Here are some command lists in command mode.\n\n");
     printf("\033[38;5;87m\t\t\t\t    type :help\033[m\t for new player.\n");
-    printf("\033[38;5;87m\t\t\t\t    type :q!\033[m\t to rage quit if you stress out!\n");
-    printf("\033[38;5;87m\t\t\t\t    type :id!\033[m\t to become nasionalist.\n\n\n\n\n\n\n");
+    printf("\033[38;5;87m\t\t\t\t    type :q!\033[m\t to rage quit if you stress out!\n\n\n\n\n\n\n");
+    printf("------------------------------------------------------------------------------------------------------------------------\n");
+}
+
+void showHelp(){
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGTC Code Editor v0.1\n\n");
+    printf("\t\t\t\t    Here are some command lists maybe you can use for\n\n");
+    printf("\033[38;5;87m\t\t\t\t    type :u\033[m\t\t\t undo.\n");
+    printf("\033[38;5;87m\t\t\t\t    type :r\033[m\t\t\t redo.\n");
+    printf("\033[38;5;87m\t\t\t\t    type :s\033[m\t\t\t save.\n");
+    printf("\033[38;5;87m\t\t\t\t    type :sq!\033[m\t\t\t save and force quit.\n");
     printf("------------------------------------------------------------------------------------------------------------------------\n");
 }
 
@@ -30,12 +85,12 @@ void ShowConsoleCursor(bool showFlag){
 void printLine(adrLine P, int linenum){
     adrTxt temp = P->TxtFirst;
     if ((!cursor.txt_info || !temp) && (linenum == cursor.line_info->LineNumber)){
-        cout << '|';
+        printf("\033[38;5;87m|\033[m");
     }
     while (temp){
         cout << temp->info;
         if(temp == cursor.txt_info){
-            cout << '|';
+            printf("\033[38;5;87m|\033[m");
         }
         temp = temp->next;
     }
@@ -45,7 +100,7 @@ void printLine(adrLine P, int linenum){
 
 void Print(string mode){
     int line = 1;
-    printf("Mode: %s\n", mode.c_str());
+    printf("Mode: %s\n\n\n", mode.c_str());
     int numline = 0;
     adrLine Line_tmp = Line.First;
     while(Line_tmp != NULL){

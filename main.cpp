@@ -8,13 +8,33 @@ int main(void)
     ShowConsoleCursor(false);
 
     int inp;
-    createLine();
+    bool typing = false;
+    DefaultDisplay(typing);
 
-    while(true){
+    while(typing){
         cls(hStdout);
         Print("Insert");
         inp = get_code();
-        if (inp == 13){ // Enter
+        if (inp == 27){ // Enter
+            cls(hStdout);
+            Print("Command");
+
+            printf("\n\n\n\n\n\n");
+            string mode;
+            inp = get_code();
+            if (inp == 58){
+                cout << char(inp);
+                cin >> mode;
+                if (mode == "q!"){
+                    cls(hStdout);
+                    cout << "!Thank You!" << endl;
+                    break;
+                } else {
+                    continue;
+                }
+            }
+
+        } else if (inp == 13){ // Enter
             createLine();
         } else if (inp == 8){ //Backspace
             backspace();

@@ -8,7 +8,6 @@ Cursor cursor = {
 }; //Universal variable
 
 //Function
-
 adrTxt createTxtElem(infotype x){
     adrTxt P = new ElemenTxt;
     P->info = x;
@@ -68,6 +67,7 @@ void add(infotype x){
 
 void backspace(){
     if (cursor.txt_info){
+        cursor.line_info->TxtLen--;
         if (cursor.txt_info == cursor.line_info->TxtFirst){
             cursor.txt_info = NULL;
             cursor.line_info->TxtFirst = cursor.line_info->TxtFirst->next;
